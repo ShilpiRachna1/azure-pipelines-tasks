@@ -29,9 +29,6 @@ steps:
 - script: npm install
   displayName: npm install
 
-- script: node ./ci/check-node-executor-agent-version.js
-  displayName: Verify node executor and related minimum agent version
-
 # Verify min agent demands
 - script: |
     cd ci/verifyMinAgentDemands
@@ -99,6 +96,9 @@ steps:
       eq(variables['Build.SourceBranch'], 'refs/heads/master')
     )
   displayName: Push release branch
+
+- script: node ./ci/check-node-executor-agent-version.js --task "$(task_pattern)"
+  displayName: Verify node executor and related minimum agent version
 
 - script: node ./ci/check-downgrading.js --task "$(task_pattern_fordowngradingcheck)" --sprint $(currentSprint) --week $(currentSprintWeek)
   displayName: Check for downgrading tasks
